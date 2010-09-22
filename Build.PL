@@ -8,6 +8,7 @@ my $builder = Module::Build->new(
     dist_author         => q{Alberto Simoes <ambs@cpan.org>},
     dist_version_from   => 'lib/ExtUtils/LibBuilder.pm',
     build_requires => {
+        'ExtUtils::CBuilder' => '0.23',
         'Test::More' => 0,
     },
     add_to_cleanup      => [ 'ExtUtils-LibBuilder-*' ],
