@@ -3,49 +3,77 @@ package ExtUtils::LibBuilder;
 use warnings;
 use strict;
 
-=head1 NAME
-
-ExtUtils::LibBuilder - The great new ExtUtils::LibBuilder!
-
-=head1 VERSION
-
-Version 0.01
-
-=cut
-
 our $VERSION = '0.01';
 
+use base 'ExtUtils::CBuilder';
+
+use File::Spec;
+use File::Temp qw/tempdir/;
+
+=head1 NAME
+
+ExtUtils::LibBuilder - A tool to build C libraries.
 
 =head1 SYNOPSIS
 
-Quick summary of what the module does.
-
-Perhaps a little code snippet.
-
     use ExtUtils::LibBuilder;
 
-    my $foo = ExtUtils::LibBuilder->new();
-    ...
+    my $libbuilder = ExtUtils::LibBuilder->new();
 
-=head1 EXPORT
+=head1 METHODS
 
-A list of functions that can be exported.  You can delete this section
-if you don't export anything, such as for a purely object-oriented module.
-
-=head1 SUBROUTINES/METHODS
-
-=head2 function1
+=head2 new
 
 =cut
 
-sub function1 {
+sub new {
+    my $class = shift;
+    my %options = @_;
+
+    my $self = bless ExtUtils::CBuilder->new(%options) => $class;
+    # $self->{quiet} = 1;
+
+    $self->{libext} = $^O eq "darwin" ? ".dylib" : ( $^O =~ /win/i ? ".dll" : ".so");
+    $self->{exeext} = $^O =~ /win32/i ? ".exe" : "";
+
+    print STDERR "\nTesting Linux\n\n";
+    return $self if $^O !~ /darwin|win32/i && $self->_try;
+
+    print STDERR "\nTesting Darwin\n\n";
+    $self->{config}{lddlflags} =~ s/-bundle/-dynamiclib/;
+    return $self if $^O !~ /win32/i && $self->_try;
+
+    print STDERR "\nTesting Win32\n\n";
+
+    print STDERR "\nNothing...\n\n";
+    return undef;
 }
 
-=head2 function2
+sub _try {
+    my ($self) = @_;
+    my $tmp = tempdir CLEANUP => 1;
+    _write_files($tmp);
 
-=cut
+    print STDERR "\nAAAAAAIEEEEEEH\n\n";
 
-sub function2 {
+    my @csources = map { File::Spec->catfile($tmp, $_) } qw'library.c test.c';
+    my @cobjects = map { $self->compile( source => $_) } @csources;
+
+    my $libfile = File::Spec->catfile($tmp => "libfoo$self->{libext}");
+    my $exefile = File::Spec->catfile($tmp => "foo$self->{exeext}");
+
+    $self->link( objects     => [$cobjects[0]],
+                 module_name => "foo",
+                 lib_file    => $libfile );
+
+    return 0 unless -f $libfile;
+
+    $self->link_executable( exe_file           => $exefile,
+                            extra_linker_flags => "-L $tmp -lfoo",
+                            objects => [$cobjects[1]]);
+
+    return 0 unless -f $exefile && -x _;
+    return 1;
 }
 
 =head1 AUTHOR
@@ -107,4 +135,37 @@ See http://dev.perl.org/licenses/ for more information.
 
 =cut
 
+
+sub _write_files {
+    my $outpath = shift;
+    my $fh;
+    seek DATA, 0, 0;
+    while(<DATA>) {
+        if (m!^==\[(.*?)\]==!) {
+	    my $fname = $1;
+            $fname = File::Spec->catfile($outpath, $fname);
+            open $fh, ">$fname" or die "Can't create temporary file $fname\n";
+        } elsif ($fh) {
+            print $fh $_;
+        }
+    }
+}
+
 1; # End of ExtUtils::LibBuilder
+
+
+__DATA__
+==[library.c]==
+  int answer(void) {
+      return 42;
+  }
+==[test.c]==
+#include <stdio.h>
+
+int main() {
+    int a = answer();
+    printf("%d\n", a);
+    return 0;
+}
+
+
