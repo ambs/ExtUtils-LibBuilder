@@ -1,6 +1,6 @@
-#!perl -T
-use Test::More tests => 1;
+#!perl
 
+use Test::More tests => 1;
 use ExtUtils::LibBuilder;
 
 my $libbuilder = ExtUtils::LibBuilder->new();

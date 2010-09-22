@@ -4,6 +4,7 @@ use warnings;
 use strict;
 
 our $VERSION = '0.01';
+our $DEBUG   = 0;
 
 use base 'ExtUtils::CBuilder';
 
@@ -24,6 +25,12 @@ ExtUtils::LibBuilder - A tool to build C libraries.
 
 =head2 new
 
+=head2 link
+
+=head2 link_executable
+
+These methods are overriden from ExtUtils::CBuilder. Parameters are the same.
+
 =cut
 
 sub new {
@@ -36,16 +43,33 @@ sub new {
     $self->{libext} = $^O eq "darwin" ? ".dylib" : ( $^O =~ /win/i ? ".dll" : ".so");
     $self->{exeext} = $^O =~ /win32/i ? ".exe" : "";
 
-    print STDERR "\nTesting Linux\n\n";
+    $DEBUG && print STDERR "\nTesting Linux\n\n";
     return $self if $^O !~ /darwin|win32/i && $self->_try;
 
-    print STDERR "\nTesting Darwin\n\n";
+    $DEBUG && print STDERR "\nTesting Darwin\n\n";
     $self->{config}{lddlflags} =~ s/-bundle/-dynamiclib/;
     return $self if $^O !~ /win32/i && $self->_try;
 
-    print STDERR "\nTesting Win32\n\n";
+    $DEBUG && print STDERR "\nTesting Win32\n\n";
+    *link = sub {
+        my ($self, %options) = @_;
+        my $LD = $self->{config}{ld};
+        system($LD, "-shared", "-o",
+               $options{lib_file},
+               @{$options{objects}});
+    };
+    *link_executable = sub {
+        my ($self, %options) = @_;
+        my $LD = $self->{config}{ld};
+        my @CFLAGS = split /\s+/, $options{extra_linker_flags};
+        system($LD, "-o",
+               $options{exe_file},
+               @CFLAGS,
+               @{$options{objects}});
+    };
+    return $self if $self->_try;
 
-    print STDERR "\nNothing...\n\n";
+    $DEBUG && print STDERR "\nNothing...\n\n";
     return undef;
 }
 
@@ -53,8 +77,6 @@ sub _try {
     my ($self) = @_;
     my $tmp = tempdir CLEANUP => 1;
     _write_files($tmp);
-
-    print STDERR "\nAAAAAAIEEEEEEH\n\n";
 
     my @csources = map { File::Spec->catfile($tmp, $_) } qw'library.c test.c';
     my @cobjects = map { $self->compile( source => $_) } @csources;
@@ -69,7 +91,7 @@ sub _try {
     return 0 unless -f $libfile;
 
     $self->link_executable( exe_file           => $exefile,
-                            extra_linker_flags => "-L $tmp -lfoo",
+                            extra_linker_flags => "-L$tmp -lfoo",
                             objects => [$cobjects[1]]);
 
     return 0 unless -f $exefile && -x _;
