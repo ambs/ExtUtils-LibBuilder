@@ -43,6 +43,7 @@ close OUT;
 add_to_cleanup("main.c");
 
 $libbuilder->compile( source => 'main.c' );
+add_to_cleanup("main.o");
 ok(-f "main.o");
 
 $libbuilder->link_executable( exe_file => "add$libbuilder->{exeext}",
@@ -50,6 +51,7 @@ $libbuilder->link_executable( exe_file => "add$libbuilder->{exeext}",
                               objects => ["main.o"]);
 ok(-f "add$libbuilder->{exeext}");
 ok(-x "add$libbuilder->{exeext}");
+add_to_cleanup("add$libbuilder->{exeext}");
 
 my $ans = `add$libbuilder->{exeext}`;
 chomp $ans;

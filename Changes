@@ -1,5 +1,9 @@
 Revision history for ExtUtils-LibBuilder
 
-0.01    Date/time
-        First version, released on an unsuspecting world.
+0.01    Thu Sep 23 21:19:17 WEST 2010
+        - Ported the code from Config::AutoConf::Linker to this new module
+        - Factorized the code for readability and usability
+        - Still missing real documentation (check t/01-simple.t for an example)
+        - Should work on Linux, MacOS X and Strawberry Perl.
+          Let me know of other supported operating systems. Thank you!
 

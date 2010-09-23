@@ -18,18 +18,18 @@ ExtUtils::LibBuilder - A tool to build C libraries.
 =head1 SYNOPSIS
 
     use ExtUtils::LibBuilder;
-
     my $libbuilder = ExtUtils::LibBuilder->new();
 
 =head1 METHODS
+
+Supports all the method from ExtUtils::CBuilder. The following three
+methods were adapted to be used in standalone C libraries.
 
 =head2 new
 
 =head2 link
 
 =head2 link_executable
-
-These methods are overriden from ExtUtils::CBuilder. Parameters are the same.
 
 =cut
 
@@ -106,9 +106,12 @@ Alberto Simoes, C<< <ambs at cpan.org> >>
 
 =head1 BUGS
 
-Please report any bugs or feature requests to C<bug-extutils-libbuilder at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=ExtUtils-LibBuilder>.  I will be notified, and then you'll
-automatically be notified of progress on your bug as I make changes.
+Please report any bugs or feature requests to
+C<bug-extutils-libbuilder at rt.cpan.org>, or through the web
+interface at
+L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=ExtUtils-LibBuilder>.
+I will be notified, and then you'll automatically be notified of
+progress on your bug as I make changes.
 
 
 
@@ -141,10 +144,6 @@ L<http://cpanratings.perl.org/d/ExtUtils-LibBuilder>
 L<http://search.cpan.org/dist/ExtUtils-LibBuilder/>
 
 =back
-
-
-=head1 ACKNOWLEDGEMENTS
-
 
 =head1 LICENSE AND COPYRIGHT
 
