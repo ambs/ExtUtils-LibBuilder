@@ -54,6 +54,7 @@ sub new {
     *link = sub {
         my ($self, %options) = @_;
         my $LD = $self->{config}{ld};
+        $options{objects} = [$options{objects}] unless ref $options{objects};
         system($LD, "-shared", "-o",
                $options{lib_file},
                @{$options{objects}});
@@ -62,6 +63,7 @@ sub new {
         my ($self, %options) = @_;
         my $LD = $self->{config}{ld};
         my @CFLAGS = split /\s+/, $options{extra_linker_flags};
+        $options{objects} = [$options{objects}] unless ref $options{objects};
         system($LD, "-o",
                $options{exe_file},
                @CFLAGS,
