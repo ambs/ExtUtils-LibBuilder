@@ -67,7 +67,9 @@ elsif ($^O =~ /aix/i) {
     $ENV{LIBPATH} = ".:$oldlibpath";
 }
 
-my $ans = `add$libbuilder->{exeext}`;
+my $P;
+$P = "./" unless $^O =~ /mswin32/i;
+my $ans = `$Padd$libbuilder->{exeext}`;
 chomp $ans;
 is($ans, 15);
 
