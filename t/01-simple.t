@@ -69,7 +69,7 @@ elsif ($^O =~ /aix/i) {
 
 my $P;
 $P = "./" unless $^O =~ /mswin32/i;
-my $ans = `$Padd$libbuilder->{exeext}`;
+my $ans = `${P}add$libbuilder->{exeext}`;
 chomp $ans;
 is($ans, 15);
 
