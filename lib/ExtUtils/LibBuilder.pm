@@ -184,7 +184,7 @@ __DATA__
   }
 ==[test.c]==
 #include <stdio.h>
-
+extern int answer(void);
 int main() {
     int a = answer();
     printf("%d\n", a);

@@ -53,6 +53,20 @@ ok(-f "add$libbuilder->{exeext}");
 ok(-x "add$libbuilder->{exeext}");
 add_to_cleanup("add$libbuilder->{exeext}");
 
+
+if ($^O =~ /mswin32/i) {
+    $ENV{PATH} = ".;$ENV{PATH}";
+} elsif ($^O =~ /darwin/i) {
+    $ENV{DYLD_LIBRARY_PATH} = ".";
+}
+elsif ($^O =~ /(?:linux|bsd|sun|sol|dragonfly|hpux|irix)/i) {
+    $ENV{LD_LIBRARY_PATH} = ".";
+}
+elsif ($^O =~ /aix/i) {
+    my $oldlibpath = $ENV{LIBPATH} || '/lib:/usr/lib';
+    $ENV{LIBPATH} = ".:$oldlibpath";
+}
+
 my $ans = `add$libbuilder->{exeext}`;
 chomp $ans;
 is($ans, 15);

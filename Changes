@@ -1,5 +1,8 @@
 Revision history for ExtUtils-LibBuilder
 
+0.02    Fri Sep 24 09:34:01 WEST 2010
+        - Fixed tests and their relative search paths.
+
 0.01    Thu Sep 23 21:19:17 WEST 2010
         - Ported the code from Config::AutoConf::Linker to this new module
         - Factorized the code for readability and usability
