@@ -3,7 +3,7 @@ package ExtUtils::LibBuilder;
 use warnings;
 use strict;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 our $DEBUG   = 0;
 
 use base 'ExtUtils::CBuilder';
@@ -18,7 +18,7 @@ ExtUtils::LibBuilder - A tool to build C libraries.
 =head1 SYNOPSIS
 
     use ExtUtils::LibBuilder;
-    my $libbuilder = ExtUtils::LibBuilder->new();
+    my $libbuilder = ExtUtils::LibBuilder->new( %options );
 
 =head1 METHODS
 
@@ -27,9 +27,41 @@ methods were adapted to be used in standalone C libraries.
 
 =head2 new
 
+This method creates a new ExtUtils::LibBuilder object. While it
+supports all C<ExtUtils::CBuilder> methods some might work slightly
+differently (namely the two bellow).
+
+You can supply to the constructor any option recognized by
+C<ExtUtils::CBuilder> constructor. None of them will be used by
+C<LibBuilder>.
+
 =head2 link
 
+   $libbuilder -> link( objects     => [ "foo.o", "bar.o" ],
+                        module_name => "foobar",
+                        lib_file    => "libfoobar$libbuilder->{libext}");
+
+Options to the link method are the same as the C<CBuilder>
+counterpart. Note that the result is a standalone C Library and not a
+bundle to be loaded by Perl.
+
+Also, note that you can use the C<libext> key to retrieve from the
+object the common library extension on the running system (including
+the dot).
+
 =head2 link_executable
+
+  $libbuilder->link_executable( objects => ["main.o"],
+                                extra_linker_flags => "-L. -lfoobar",
+                                exe_file => "foobarcmd$libbuilder->{exeext}");
+
+The C<link_executable> needs, as C<extra_linker_flags> options, the
+name of the library and the search path. Future versions might include
+better handling on the library files.
+
+Also, note that you can use the C<exeext> key to retrieve from the
+object the common executable extension on the running system
+(including the dot).
 
 =cut
 

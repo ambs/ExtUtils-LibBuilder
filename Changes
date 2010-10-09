@@ -1,5 +1,8 @@
 Revision history for ExtUtils-LibBuilder
 
+0.03    Sat Oct  9 15:06:40 WEST 2010
+        - Mainly documentation fixes.
+
 0.02    Fri Sep 24 09:34:01 WEST 2010
         - Fixed tests and their relative search paths.
 
