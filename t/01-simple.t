@@ -61,6 +61,11 @@ if ($^O =~ /mswin32/i) {
 }
 elsif ($^O =~ /(?:linux|bsd|sun|sol|dragonfly|hpux|irix)/i) {
     $ENV{LD_LIBRARY_PATH} = ".";
+    if ($^O =~ /irix/) {
+        # trying my luck
+        $ENV{LD_LIBRARYN32_PATH} = ".";
+        $ENV{LD_LIBRARYN64_PATH} = ".";
+    }
 }
 elsif ($^O =~ /aix/i) {
     my $oldlibpath = $ENV{LIBPATH} || '/lib:/usr/lib';

@@ -3,7 +3,7 @@ package ExtUtils::LibBuilder;
 use warnings;
 use strict;
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 our $DEBUG   = 0;
 
 use base 'ExtUtils::CBuilder';
