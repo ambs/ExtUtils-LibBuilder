@@ -5,7 +5,6 @@ README
 lib/ExtUtils/LibBuilder.pm
 t/00-load.t
 t/01-simple.t
-t/manifest.t
 t/pod-coverage.t
 t/pod.t
 META.yml

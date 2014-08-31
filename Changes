@@ -1,5 +1,8 @@
 Revision history for ExtUtils-LibBuilder
 
+0.05    Sun Aug 31 13:44:44 WEST 2014
+        - Added metadata for metacpan.
+
 0.04    Sun Nov 21 13:38:35 WET 2010
         - Trying my luck on IRIX...
 
