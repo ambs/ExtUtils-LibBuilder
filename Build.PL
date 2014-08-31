@@ -14,12 +14,11 @@ my $builder = Module::Build->new(
                             'Test::More'         => 0,
     },
     add_to_cleanup      => [ 'ExtUtils-LibBuilder-*' ],
-    resources           => {
-                            repository => {
-                                           type => 'git',
-                                           url  => 'git://github.com/ambs/ExtUtils-LibBuilder.git',
-                                          },
-                           },
+    meta_merge => {
+        resources  => {
+            repository => 'http://github.com/ambs/ExtUtils-LibBuilder',
+        },
+    },
 );
 
 $builder->create_build_script();
