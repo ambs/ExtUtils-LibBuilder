@@ -23,4 +23,4 @@ install:
     - cpanm .                 || { cat ~/.cpanm/build.log ; false ; }
 
 script:
-    - make test
+    - ./Build test
