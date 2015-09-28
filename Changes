@@ -1,5 +1,8 @@
 Revision history for ExtUtils-LibBuilder
 
+0.07    Mon Sep 28 14:53:40 WEST 2015
+        - Added minimum required Perl Version (kwalitee++).
+
 0.06    Sun Aug 31 21:02:44 WEST 2014
         - Fixed metadata for metacpan (thanks to Gabor Szabo).
 

@@ -7,6 +7,9 @@ my $builder = Module::Build->new(
     license             => 'perl',
     dist_author         => q{Alberto Simoes <ambs@cpan.org>},
     dist_version_from   => 'lib/ExtUtils/LibBuilder.pm',
+    requires => {
+        'perl' => '5.006',
+    },
     build_requires      => {
                             'ExtUtils::CBuilder' => '0.23',
                             'File::Spec'         => 0,
