@@ -3,7 +3,7 @@ package ExtUtils::LibBuilder;
 use warnings;
 use strict;
 
-our $VERSION = '0.07';
+our $VERSION = '0.08';
 our $DEBUG   = 0;
 
 use base 'ExtUtils::CBuilder';
@@ -29,7 +29,7 @@ methods were adapted to be used in standalone C libraries.
 
 This method creates a new ExtUtils::LibBuilder object. While it
 supports all C<ExtUtils::CBuilder> methods some might work slightly
-differently (namely the two bellow).
+differently (namely the two below).
 
 You can supply to the constructor any option recognized by
 C<ExtUtils::CBuilder> constructor. None of them will be used by

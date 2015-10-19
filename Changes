@@ -1,5 +1,9 @@
 Revision history for ExtUtils-LibBuilder
 
+0.08    Mon Oct 19 17:46:02 WEST 2015
+        - Minor spelling fix (thanks to Gregor Herrmann,
+        from Debian community).
+
 0.07    Mon Sep 28 14:53:40 WEST 2015
         - Added minimum required Perl Version (kwalitee++).
 
